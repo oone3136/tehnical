@@ -23,8 +23,15 @@ public class MonitoringControler {
 
     @PostMapping("/monitoring/byNama")
     public List<Monitoring> getByNama(@RequestBody Map<String, String> requestBody) {
-        String namaLengkap = requestBody.get("namaLengkap");
-        return services.getNamaLengkap(namaLengkap);
+        String nama_lengkap = requestBody.get("nama_lengkap");
+        Long nik = null;
+        if (requestBody.containsKey("nik")) {
+            String nikString = requestBody.get("nik");
+            if (!nikString.isEmpty()) {
+                nik = Long.valueOf(nikString);
+            }
+        }
+        return services.getNamaLengkap(nama_lengkap, nik);
     }
     @GetMapping("/monitoring/{id}")
     public Monitoring getById(@PathVariable("id") Long id)

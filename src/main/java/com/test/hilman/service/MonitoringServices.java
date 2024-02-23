@@ -20,15 +20,14 @@ public class MonitoringServices {
     public Monitoring getByIdMonitoring(Long id){
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("tidak ada data dengan "+ id +"ini"));
     }
-    public List<Monitoring> getNamaLengkap(String namaLengkap)
-    {
-        List<Monitoring> result = repository.searchByNamaLengkap(namaLengkap);
-        if (result.isEmpty())
-        {
+    public List<Monitoring> getNamaLengkap(String nama_lengkap, Long nik) {
+        List<Monitoring> result = repository.searchByNikOrNamaLengkap(nama_lengkap, nik);
+        if (result.isEmpty()) {
             throw new ResourceNotFoundException("Tidak ada data");
         }
         return result;
     }
+
 
     public Monitoring createMonitoring(Monitoring request)
     {

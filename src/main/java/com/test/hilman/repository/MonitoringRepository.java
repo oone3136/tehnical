@@ -9,8 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MonitoringRepository extends JpaRepository<Monitoring, Long> {
-    @Query(value = "SELECT * FROM monitoring WHERE LOWER(nama_lengkap) LIKE LOWER(CONCAT('%', :keywords, '%'))", nativeQuery = true)
-    List<Monitoring> searchByNamaLengkap(@Param("keywords") String keywords);
+    @Query(value = "SELECT * FROM monitoring WHERE " +
+            "(:nama_lengkap IS NULL OR LOWER(nama_lengkap) " +
+            "LIKE LOWER(CONCAT('%', :nama_lengkap, '%'))) AND " +
+            "(:nik IS NULL OR nik = :nik);",
+            nativeQuery = true)
+    List<Monitoring> searchByNikOrNamaLengkap(@Param("nama_lengkap") String nama,
+                                              @Param("nik") Long nik);
+
 
     Optional<Monitoring> findByNamaLengkap(String namaLengkap);
 }
